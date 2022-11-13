@@ -8,6 +8,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 645px) {
+      flex-direction: column;
+      a {
+        margin-bottom: 30px;
+      }
+    }
   }
 
   &__logo {

@@ -1,8 +1,28 @@
 @import '../variables';
 
 .categories {
+  @media (max-width: 750px) {
+    display: flex;
+    width: 100%;
+    overflow: scroll;
+  }
   ul {
     display: flex;
+    @media (max-width: 1260px) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 7px;
+      grid-row-gap: 7px;
+    }
+
+    @media (max-width: 400px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @media (max-width: 750px) {
+      display: flex;
+      width: 785px;
+    }
 
     li {
       background-color: #f9f9f9;
@@ -13,6 +33,9 @@
       cursor: pointer;
       transition: background-color 0.1s ease-in-out;
       @include noselect();
+      @media (max-width: 400px) {
+        padding: 10px 15px;
+      }
 
       &:hover {
         background-color: darken(#f9f9f9, 2%);

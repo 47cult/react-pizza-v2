@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from './redux/slices/counterSlice'
 import { Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -9,12 +11,29 @@ import NotFound from './pages/NotFound';
 
 import './scss/app.scss';
 
+export const SearchContext = React.createContext('');
+
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
-  console.log(searchValue, 'INPUT CHANGED')
+  const count = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch()
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <button
+          aria-label="Increment value"
+          onClick={() => dispatch(increment())}
+        >
+          Increment
+        </button>
+        <span>{count}</span>
+        <button
+          aria-label="Decrement value"
+          onClick={() => dispatch(decrement())}
+        >
+          Decrement
+        </button>
+      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+      <Header />
       <div className="content">
         <div className="container"></div>
         <Routes>
@@ -23,6 +42,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      </SearchContext.Provider>
     </div>
   );
 }

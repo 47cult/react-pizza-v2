@@ -1,16 +1,33 @@
 import React from "react";
 import { SearchContext } from "../../App";
 
-
 import styles from "./Search.module.scss";
 
 const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const [value, setValue] = React.useState("");
 
+  const { setSearchValue } = React.useContext(SearchContext);
+
+  const inputRef = React.useRef();
+
+  const onChangeInput = (e) => {
+    setValue(e.target.value);
+  }
+
+  const newSearch = () => {
+    setSearchValue(inputRef.current.value);
+  };
+  
+  const onClear = () => {
+    setValue("");
+    setSearchValue("");
+    inputRef.current.focus();
+  }
 
   return (
     <div className={styles.root}>
       <svg
+        onClick={newSearch}
         className={styles.icon}
         enableBackground="new 0 0 100 100"
         id="Layer_1"
@@ -48,14 +65,15 @@ const Search = () => {
         </g>
       </svg>
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {searchValue && (
+      {value && (
         <svg
-        onClick={() => setSearchValue('')}
+          onClick={onClear}
           className={styles.clearIcon}
           data-name="Layer 2"
           id="Layer_2"

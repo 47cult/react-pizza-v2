@@ -1,24 +1,44 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-function Sort({ value, onChangeSort }) {
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
+
+export const list = [
+  { name: "популярности", sortProperty: "rating" },
+  { name: "популярности (возрастанию)", sortProperty: "-rating" },
+  { name: "цене", sortProperty: "price" },
+  { name: "цене (возрастанию)", sortProperty: "-price" },
+  { name: "алфавиту", sortProperty: "title" },
+  { name: "алфавиту (возрастанию)", sortProperty: "-title" },
+];
+
+
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+  const sortRef = React.useRef();
+
+
   const [isOpen, setOpen] = React.useState(false);
-
-  const list = [
-    { name: "популярности", sortProperty: "rating" },
-    { name: "популярности (возрастанию)", sortProperty: "-rating" },
-    { name: "цене", sortProperty: "price" },
-    { name: "цене (возрастанию)", sortProperty: "-price" },
-    { name: "алфавиту", sortProperty: "title" },
-    { name: "алфавиту (возрастанию)", sortProperty: "-title" },
-  ];
-
-
-
-  const onClickSelected = (i) => {
-    onChangeSort(i);
+  
+  const onClickSelected = (obj) => {
+    dispatch(setSort(obj));
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+    if (!event.composedPath().includes(sortRef.current)) {
+      setOpen(false);
+    }
+  };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => document.body.removeEventListener('click', handleClickOutside);
+    }, [])
+  
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -33,7 +53,7 @@ function Sort({ value, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!isOpen)}>{value.name}</span>
+        <span onClick={() => setOpen(!isOpen)}>{sort.name}</span>
       </div>
 
       {isOpen && (
@@ -43,7 +63,7 @@ function Sort({ value, onChangeSort }) {
               <li
                 key={i}
                 onClick={() => onClickSelected(obj)}
-                className={value.sortProperty === obj.sortProperty ? "active" : ""}
+                className={sort.sortProperty === obj.sortProperty ? "active" : ""}
               >
                 {obj.name}
               </li>

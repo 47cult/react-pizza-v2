@@ -4,19 +4,16 @@ function Categories( { value, onChangeCategory }) {
 
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
-  // const onClickCategory = (index) => {
-  //   setCategoryId(index);
-  // };
   return (
     <div className="categories">
       <ul>
-        {categories.map((category, i) => {
+        {categories.map((categoryName, i) => {
           return (
             <li
               key={i}
               onClick={() => onChangeCategory(i)}
               className={value === i ? 'active' : ''}>
-              {category}
+              {categoryName}
             </li>
           );
         })}

@@ -9,12 +9,14 @@ import NotFound from './pages/NotFound';
 
 import './scss/app.scss';
 
+export const SearchContext = React.createContext();
+
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
-  console.log(searchValue, 'INPUT CHANGED')
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <SearchContext.Provider value={{searchValue, setSearchValue}}>
+      <Header />
       <div className="content">
         <div className="container"></div>
         <Routes>
@@ -23,6 +25,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      </SearchContext.Provider>
     </div>
   );
 }

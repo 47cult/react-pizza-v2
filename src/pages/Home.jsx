@@ -62,8 +62,19 @@ const Home = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage])
+  }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
+  // Если был первый рендер то запрашиваем пиццы
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+    
+
+    isSearch.current = false;
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]); 
   
 // Если был первый рендер то проверяем юрл параметры и сохраняем в редуксе
   React.useEffect(() => {
@@ -82,17 +93,11 @@ const Home = () => {
     }
   }, [])
   
-// Если был первый рендер то запрашиваем пиццы
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (!isSearch.current) {
-      fetchPizzas();
+    if (!window.location.search) {
+      fetchPizzas()
     }
-    
-
-    isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchValue, currentPage]); 
+  }, [])
 
   
   

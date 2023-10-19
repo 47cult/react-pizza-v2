@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { setSort } from '../redux/slices/filterSlice'
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
 
 export const sortList = [
   { name: "популярности", sortProperty: "rating" },
@@ -12,13 +12,11 @@ export const sortList = [
 ];
 
 function Sort() {
-   const dispatch = useDispatch();
-   const sort = useSelector(state => state.filter.sort);
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
   const sortRef = React.useRef();
 
-  
   const [open, setOpen] = React.useState(false);
-  
 
   const onClickListItem = (obj) => {
     dispatch(setSort(obj));
@@ -26,20 +24,17 @@ function Sort() {
   };
 
   React.useEffect(() => {
-    console.log('sort mount')
-      const handleClickOutside = (event) => {
-        if (!event.composedPath().includes(sortRef.current)) {
-          setOpen(false);
-          console.log('click outside')
-        }
+    const handleClickOutside = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
       }
-    
-    document.body.addEventListener('click', handleClickOutside);
+    };
 
-    return () => document.body.removeEventListener('click', handleClickOutside);
-    
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => document.body.removeEventListener("click", handleClickOutside);
   }, []);
-  
+
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -66,7 +61,9 @@ function Sort() {
               <li
                 key={i}
                 onClick={() => onClickListItem(obj)}
-                className={sort.sortProperty === obj.sortProperty ? "active" : ""}
+                className={
+                  sort.sortProperty === obj.sortProperty ? "active" : ""
+                }
               >
                 {obj.name}
               </li>

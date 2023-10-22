@@ -4,6 +4,7 @@ import qs from "qs";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
@@ -15,20 +16,18 @@ import Sort, { sortList } from "../components/Sort";
 import PizzaBlock from "../components/PIzzaBlock";
 import Skeleton from "../components/PIzzaBlock/PizzaSkeleton";
 import Pagination from "../components/Pagination";
-import { SearchContext } from "../App";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filter
-  );
+  const { items, status } = useSelector(selectPizzaData);
+  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-  const { searchValue } = React.useContext(SearchContext);
+ 
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -118,7 +117,8 @@ const Home = () => {
         <div className="content__error-info">
           <h2>Произошла ошибка 😕</h2>
           <p>
-           К сожалению, не удалось получить питсы. Попробуйте повторить попытку позже
+            К сожалению, не удалось получить питсы. Попробуйте повторить попытку
+            позже
           </p>
         </div>
       ) : (
